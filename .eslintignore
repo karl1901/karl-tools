@@ -1,0 +1,8 @@
+/node_modules
+/dist
+/public
+/package-lock.json
+vite.config.ts
+auto-imports.d.ts
+components.d.ts
+shims-vue.d.ts

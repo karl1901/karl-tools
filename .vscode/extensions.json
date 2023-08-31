@@ -1,0 +1,4 @@
+{
+    // vue3项目插件配置
+    "recommendations": ["Vue.volar", "Vue.vscode-typescript-vue-plugin"]
+}

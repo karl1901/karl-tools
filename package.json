@@ -1,0 +1,53 @@
+{
+  "name": "karl-tools",
+  "version": "1.0.0",
+  "description": "karl的工具库",
+  "main": "src/js/index.ts",
+  "scripts": {
+    "dev": "vite --force --host",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint --ext .tsx,.ts ./src",
+    "test": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karl1901/karl-tools.git"
+  },
+  "keywords": [
+    "karl-tools"
+  ],
+  "author": "karl",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/karl1901/karl-tools/issues"
+  },
+  "homepage": "https://github.com/karl1901/karl-tools#readme",
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
+    "@types/node": "^20.4.2",
+    "@types/qs": "^6.9.7",
+    "@typescript-eslint/parser": "^6.0.0",
+    "axios": "^1.4.0",
+    "element-plus": "^2.3.7",
+    "eslint": "^8.44.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-vue": "^9.15.1",
+    "prettier": "^3.0.0",
+    "qs": "^6.11.2",
+    "sass": "^1.63.6",
+    "vite-plugin-inspect": "^0.7.33",
+    "vitest": "^0.34.3",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "typescript": "^5.0.2",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-vue-components": "^0.25.1",
+    "vite": "^4.4.0",
+    "vue-tsc": "^1.8.3"
+  }
+}
