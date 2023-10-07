@@ -13,7 +13,8 @@ export default defineComponent({
         return {
             title: '首页'
         };
-    }
+    },
+    methods: {}
 });
 </script>
 

@@ -50,10 +50,7 @@ export const send = (url: string, params: object, cb: Function, method: string) 
     const promise = axios({
         url: url,
         method: method,
-        data: datas,
-        headers: {
-            token: axiosConfig.loadToken(axiosConfig.tokenLocalKey) // 加载token
-        }
+        data: datas
     });
 
     promise

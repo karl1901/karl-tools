@@ -337,3 +337,61 @@ export const sortList = <T>(list: T[], order: 'ascending' | 'descending', field:
     });
     return sortedList;
 };
+
+/**
+ * 保存信息到本地
+ *
+ * @description 将信息保存到 LocalStorage 中
+ *
+ * @author karl
+ *
+ * @param key 保存关键词
+ * @param info 要保存的信息
+ * @param expire 信息过期时间（时间戳，毫秒级）
+ */
+export const saveLocalInfo = (key: string, info: string, expire: number) => {
+    const obj = {
+        info: info,
+        expire: Date.now() + expire
+    };
+    localStorage.setItem(key, JSON.stringify(obj));
+};
+
+/**
+ * 加载本地保存的信息
+ *
+ * @description 将保存在 LocalStorage 中的信息取出
+ *
+ * @author karl
+ *
+ * @param key 保存关键词
+ *
+ * @returns 本地保存的信息
+ */
+export const loadLocalInfo = (key: string) => {
+    const localInfo = localStorage.getItem(key);
+    if (localInfo) {
+        const { info } = JSON.parse(localInfo);
+        return info;
+    }
+    return null;
+};
+
+/**
+ * 检验本地保存的信息是否过期
+ *
+ * @description 检验保存在 LocalStorage 中的信息是否过期
+ *
+ * @author karl
+ *
+ * @param key 保存关键词
+ */
+export const checkLocalInfo = (key: string) => {
+    const localInfo = localStorage.getItem(key);
+    if (localInfo) {
+        const { expire } = JSON.parse(localInfo);
+        if (Date.now() > expire) {
+            localStorage.removeItem(key);
+        }
+    }
+};
