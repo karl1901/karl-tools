@@ -140,7 +140,7 @@ export const copyText = async (str: string, isShowOk: boolean | null): Promise<v
         .writeText(str)
         .then(() => {
             if (isShowOk || isShowOk == null) {
-                console.log('文本已成功复制到剪贴板');
+                console.log('文本已成功复制到剪贴板:' + str);
             }
         })
         .catch((error) => {

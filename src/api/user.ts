@@ -7,12 +7,19 @@ const Api = {
     getUserInfo: '/teach_project_service/user/auth/getUserInfo'
 };
 
+type LoginRes = {
+    code: number;
+    success: boolean;
+    token: string;
+    message: string;
+};
+
 // 用户登录方法
 export const login = (params: object, cb: Function) => {
     send(
         Api.login,
         params,
-        (data: any) => {
+        (data: LoginRes) => {
             if (data.success) {
                 // 存在token就保存
                 if (data && data.token) {
