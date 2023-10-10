@@ -395,3 +395,33 @@ export const checkLocalInfo = (key: string) => {
         }
     }
 };
+
+/**
+ * 字符串掩盖格式化
+ *
+ * @description 对字符串进行星号掩盖格式化
+ *
+ * @author karl
+ *
+ * @param str 要格式的字符串
+ * @param preserveStart 前置保留数
+ * @param preserveEnd 后置保留数
+ * @param starCount 星号数量，默认：除保留数外的字符数
+ *
+ * @returns 格式化后的字符串
+ */
+export const maskStr = (
+    str: string,
+    preserveStart: number,
+    preserveEnd: number,
+    starCount: number = str.length - preserveStart - preserveEnd
+) => {
+    const length = str.length;
+    if (length <= preserveStart + preserveEnd) {
+        return str;
+    }
+    const start = str.slice(0, preserveStart);
+    const middle = '*'.repeat(starCount);
+    const end = str.slice(length - preserveEnd);
+    return start + middle + end;
+};
