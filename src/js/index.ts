@@ -1,6 +1,6 @@
 export * from './tools';
 
-import CountTo from '@/components/CountTo.vue';
+import CountTo from '../components/CountTo.vue';
 
 import { App } from 'vue';
 
