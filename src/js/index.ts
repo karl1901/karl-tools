@@ -1,6 +1,7 @@
 export * from './tools';
 
 import CountTo from '../components/CountTo.vue';
+export const ktCountTo = CountTo;
 
 import { App } from 'vue';
 
