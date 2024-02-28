@@ -6,7 +6,7 @@
  * @author karl
  *
  * @param date 日期时间
- * @param formatStr 格式化字符串，默认：yyyy-MM-dd hh:mm:ss
+ * @param formatStr 格式化字符串，默认：yyyy-MM-dd hh:mm:ss:ms
  * @param errResStr 发生错误时返回的字符串，默认：空字符串
  *
  * @returns 格式化后的结果
@@ -16,24 +16,27 @@ export const formatDate = (date: any, formatStr: string | null, errResStr: strin
         if (!isNaN(date) && !(date instanceof Date)) {
             date = new Date(date);
         }
-        formatStr = formatStr ? formatStr : 'yyyy-MM-dd hh:mm:ss';
+        formatStr = formatStr ? formatStr : 'yyyy-MM-dd hh:mm:ss:ms';
         let year = date.getFullYear() + '';
         let month = date.getMonth() + 1;
         let day = date.getDate();
         let hour = date.getHours();
         let minute = date.getMinutes();
         let second = date.getSeconds();
+        let millisecond = date.getMilliseconds();
         month = month < 10 ? '0' + month : '' + month;
         day = day < 10 ? '0' + day : '' + day;
         hour = hour < 10 ? '0' + hour : '' + hour;
         minute = minute < 10 ? '0' + minute : '' + minute;
         second = second < 10 ? '0' + second : '' + second;
+        millisecond = millisecond < 10 ? '0' + millisecond : '' + millisecond;
         formatStr = formatStr.replace(/yyyy/g, year);
         formatStr = formatStr.replace(/MM/g, month);
         formatStr = formatStr.replace(/dd/g, day);
         formatStr = formatStr.replace(/hh/g, hour);
         formatStr = formatStr.replace(/mm/g, minute);
         formatStr = formatStr.replace(/ss/g, second);
+        formatStr = formatStr.replace(/ms/g, millisecond);
         return formatStr;
     } catch (error) {
         console.error(error);
