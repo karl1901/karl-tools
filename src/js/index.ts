@@ -1,5 +1,6 @@
 export * from './tools';
 export * from './ajax/ajax';
+export * from './ajax/tools';
 export * from './eventEmitter/eventEmitter';
 
 import CountTo from '../components/CountTo.vue';

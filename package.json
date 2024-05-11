@@ -1,6 +1,6 @@
 {
   "name": "karl-tools",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "karl的工具库",
   "main": "src/js/index.ts",
   "scripts": {
