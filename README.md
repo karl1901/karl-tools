@@ -2,7 +2,7 @@
 
 > 介绍：个人开源npm工具库，觉得好用可以点个start  
 >
-> 地址：[npm](https://www.npmjs.com/package/karl-tools)  
+> 地址：[点击打开 - npm仓库](https://www.npmjs.com/package/karl-tools)  
 >
 > 安装：`npm i karl-tools`
 
@@ -19,6 +19,10 @@
 > 1.0.4 优化了说明文档的格式，添加了字符串掩盖格式化函数  
 >
 > 1.0.5 添加了文档的说明和工具使用方法，添加了组件按需导入的功能  
+>
+> 1.0.6 格式化日期的函数添加了毫秒显示，默认格式为：yyyy-MM-dd hh:mm:ss:ms  
+>
+> 1.0.7 添加了基于Axios的Ajax请求封装函数，并导出了Axios实例供调用者自定义配置和拦截器等；添加了基于发布者-订阅者模式的事件处理器工具类
 
 ## 已发布内容
 
@@ -145,3 +149,136 @@ prefix：`前缀字符串`，默认：''
 suffix：`后缀字符串`，默认：''  
 
 ps：源码可自行查看，转载需标明出处！  
+
+### 3、Axios - Ajax请求封装函数工具
+
+ps：使用前记得下载Axios库和Qs库
+
+请求函数：send  
+
+请求参数：  
+
+url：`请求地址`  
+param：`请求参数`  
+method：`请求方式`  
+returnPromise：`是否返回Promise对象`  
+errorResponse：`是否返回自定义错误信息函数，函数可接收一个参数(类型：any)，即请求发生错误的信息`  
+callback：`回调函数，可接收一个参数(类型：any)，即请求返回的结果`  
+
+返回值：Promise对象或回调函数  
+
+使用示例：
+
+```ts
+// Axios内容导入
+import { Method } from 'axios';
+// 导入Ajax请求封装函数工具、Axios实例
+import { send, Axios } from 'karl-tools';
+
+// 项目请求地址（有的项目会有多个请求地址）
+const ServerBaseUrl = {
+    server: 'http://127.0.0.1:8080',
+    baidu: 'https://api.baidu.com',
+    aliyun: 'https://api.aliyun.com'
+    otherApi: 'https://api.xxx.com'
+};
+
+type ServerBaseUrl = typeof ServerBaseUrl;
+
+/**
+ * 自定义错误信息处理函数
+ * 
+ * @description 返回一个对象，自定义请求发生错误时的返回信息
+ *
+ * @param err 错误信息
+ *
+ * @returns 返回的错误信息
+ */
+const errorResponse = (err: any) => {
+    return {
+        code: 500,
+        msg: `服务器异常:${err}`,
+        data: err
+    };
+};
+
+// 当前项目自定义的请求函数（二次封装），并导出
+export const request = (
+    base: keyof ServerBaseUrl,
+    url: string,
+    param: any | null,
+    method: Method | null,
+    returnPromise: boolean | null,
+    cb?: Function
+) => {
+    // 拼接请求地址
+    url = ServerBaseUrl[base] + url;
+    // 返回请求结果
+    return send(url, param, method, returnPromise, errorResponse, cb);
+};
+
+// 使用Axios实例，自定义请求拦截器
+Axios.interceptors.request.use(
+    (req) => {
+        return req;
+    },
+    (err) => {
+        console.log('请求拦截器错误信息:{}', err);
+    }
+);
+
+// 使用Axios实例，自定义响应拦截器
+Axios.interceptors.response.use(
+    (req) => {
+        return req;
+    },
+    (err) => {
+        console.log('响应拦截器错误信息:{}', err);
+    }
+);
+
+```
+
+### 4、事件处理器
+
+ps：主要用于处理项目中的事件，例如：登录过期/未授权，路由跳转到登录页面并弹出提示等
+
+```ts
+// 导入监听器工具
+import { EventEmitter } from 'karl-tools';
+
+/**
+ * 项目监听事件配置中心
+ */
+
+// 定义事件名称
+const customEventNamesArray = ['API:UN_AUTH', 'API:ERR_BAD_REQUEST', 'API:CUSTOM_EVENT'] as const;
+
+// 创建监听器
+const eventEmitter = new EventEmitter(customEventNamesArray);
+
+// 监听事件配置
+eventEmitter.on('API:UN_AUTH', (resp: any) => {
+    console.log('未授权，请重新登录:{}', resp);
+    // 路由跳转到登录页面
+    // 弹出提示
+    // 清除登录信息
+    // ...
+});
+
+eventEmitter.on('API:ERR_BAD_REQUEST', (resp: any) => {
+    console.log('请求发生错误:{}', resp);
+    // 弹出提示
+    // ...
+});
+
+eventEmitter.on('API:CUSTOM_EVENT', (resp: any) => {
+    console.log('自定义事件=>', resp);
+    // 自定义处理逻辑
+    // ...
+});
+
+// 导出监听器
+export { eventEmitter };
+
+```

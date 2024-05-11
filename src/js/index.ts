@@ -1,4 +1,6 @@
 export * from './tools';
+export * from './ajax/ajax';
+export * from './eventEmitter/eventEmitter';
 
 import CountTo from '../components/CountTo.vue';
 export const ktCountTo = CountTo;
