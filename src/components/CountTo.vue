@@ -126,6 +126,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .body {
-    @include bodyStylePage;
+    margin: 0px;
 }
 </style>
