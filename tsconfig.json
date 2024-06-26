@@ -17,7 +17,11 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Build */
+    "declaration": true, // 生成 `.d.ts` 文件
+    "outDir": "./dist" // 编译后生成的文件目录
   },
-  "include": ["src"]
+  "include": ["lib/**/*.ts"]
 }

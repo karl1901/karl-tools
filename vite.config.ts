@@ -1,11 +1,13 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   build: {
     lib: {
-      entry: './lib/main.ts',
+      entry: './lib/index.ts',
       name: 'karl-tools',
-      fileName: 'karl-tools'
-    }
-  }
-})
+      fileName: 'karl-tools',
+    },
+  },
+  plugins: [dts()],
+});

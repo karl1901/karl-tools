@@ -1,17 +1,16 @@
 {
   "name": "karl-tools",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "Karl's arsenal of tools",
   "type": "module",
   "files": [
-    "dist",
-    "index.d.ts"
+    "dist"
   ],
   "main": "./dist/karl-tools.umd.cjs",
   "module": "./dist/karl-tools.js",
-  "types": "./index.d.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
-    "types": "./index.d.ts",
+    "types": "./dist/index.d.ts",
     "import": "./dist/karl-tools.js",
     "require": "./dist/karl-tools.umd.cjs"
   },
@@ -37,6 +36,7 @@
     "axios": "^1.7.2",
     "qs": "^6.12.1",
     "typescript": "^5.4.5",
-    "vite": "^5.2.10"
+    "vite": "^5.2.10",
+    "vite-plugin-dts": "^3.9.1"
   }
 }
