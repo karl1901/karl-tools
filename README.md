@@ -29,6 +29,10 @@
 > 1.0.9 更新了工具说明文档，添加了工具函数和事件处理器的说明文档  
 >
 > 1.1.0 添加了并发请求函数，并更新了说明文档  
+>
+> 1.1.1 修改了整体架构，去掉了组件和页面功能，优化了工具库的兼容性，将返回的中文内容改为英文内容  
+>
+> 1.1.2 添加了qs依赖和版本说明，修改了工具库的配置文件  
 
 ## 已发布内容
 
@@ -97,68 +101,12 @@ showNow() {
 - maskStr：`字符串掩盖格式化`，例如：136\*\*\*6343、房东\*\*\*猫、游客k1\*\*ws...
 - concurRequest：`并发请求工具函数`，可控制并发数，不受浏览器限制，但是受服务器限制，如果服务器限制了并发数，那么这个函数就无法实现并发请求
 
+### 2、Axios - Ajax请求封装函数工具
 
-### 2、工具组件
-
-#### 组件使用方法
-
-1、全局导入
-
-main.ts 中
-
-```js
-import { createApp } from 'vue';
-import App from './App.vue';
-
-const app = createApp(App);
-
-// 引入 karlTools 依赖库
-import karlTools from 'karl-tools';
-// 全局使用 karlTools 依赖库
-app.use(karlTools);
-```
-
-2、按需导入
-
-页面 Vue 文件中
-
-```js
-// 引入 ktCountTo 组件
-import { ktCountTo } from 'karl-tools';
-```
-
-3、在页面上使用
-
-```html
-<kt-countTo :startValue="0" :endValue="132979" :duration="1200"></kt-countTo>
-```
-
-或
-
-```html
-<ktCountTo :startValue="0" :endValue="132979" :duration="1200"></ktCountTo>
-```
-
-4、效果图
-
-![动画.gif](http://karl-blog.oss-cn-shenzhen.aliyuncs.com/aurora/articles/2c5cf5bf52a5988c47d49a3e54a50e5e.gif)
-
-#### ktCountTo - vue 数字滚动组件
-
-参数：
-
-startValue：`起始值`，默认：0  
-endValue：`结束值`，默认：2023  
-duration：`动画时间（毫秒）`，默认：3000  
-separator：`分隔符`，默认：,  
-prefix：`前缀字符串`，默认：''  
-suffix：`后缀字符串`，默认：''  
-
-ps：源码可自行查看，转载需标明出处！  
-
-### 3、Axios - Ajax请求封装函数工具
-
-ps：使用前记得下载Axios库和Qs库
+ps：工具使用到的库以及版本如下  
+1、@types/qs: `6.9.15`  
+2、qs: `6.12.1`  
+3、axios: `1.7.2`  
 
 请求函数：send  
 
@@ -217,10 +165,8 @@ export const request = (
     returnPromise: boolean | null,
     cb?: Function
 ) => {
-    // 拼接请求地址
-    url = ServerBaseUrl[base] + url;
     // 返回请求结果
-    return send(url, param, method, returnPromise, errorResponse, cb);
+    return send(base, url, param, method, returnPromise, errorResponse, cb);
 };
 
 // 使用Axios实例，自定义请求拦截器
@@ -230,6 +176,7 @@ Axios.interceptors.request.use(
     },
     (err) => {
         console.log('请求拦截器错误信息:{}', err);
+        return Promise.reject(err);
     }
 );
 
@@ -246,7 +193,7 @@ Axios.interceptors.response.use(
 
 ```
 
-### 4、事件处理器
+### 3、事件处理器
 
 ps：主要用于处理项目中的事件，例如：登录过期/未授权，路由跳转到登录页面并弹出提示等
 

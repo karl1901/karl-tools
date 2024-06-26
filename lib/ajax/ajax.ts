@@ -8,6 +8,8 @@ import qs from 'qs';
  *
  * @author karl
  *
+ * @param baseUrl 请求地址前缀
+ * @param param 请求参数
  * @param url 请求地址
  * @param param 请求参数
  * @param method 请求方式
@@ -18,6 +20,7 @@ import qs from 'qs';
  * @returns Promise对象或回调函数
  */
 export const send = (
+    baseUrl: string | undefined,
     url: string,
     param: any | null,
     method: Method | null,
@@ -36,6 +39,7 @@ export const send = (
     }
     // 获取请求返回结果的promise对象
     const promise = axios({
+        baseURL: baseUrl,
         url: url,
         method: method,
         data: param
@@ -54,11 +58,11 @@ export const send = (
         })
         .catch((err) => {
             // 打印请求错误信息，返回错误信息结果
-            console.log('请求发生错误:{}', err);
+            console.log('An error occurred on the request:{}', err);
             // 校验是否需要返回自定义错误信息
             const errorMessage = errorResponse
                 ? errorResponse(err)
-                : { code: 500, data: err, message: `请求发生错误: ${err}`, success: false };
+                : { code: 500, data: err, message: `An error occurred on the request: ${err}`, success: false };
             // 返回错误信息
             callback ? callback(errorMessage) : null;
         });

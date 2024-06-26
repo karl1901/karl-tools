@@ -8,12 +8,9 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
-dist-ssr
+#dist
+#dist-ssr
 *.local
-
-src/auto-imports.d.ts
-src/components.d.ts
 
 # Editor directories and files
 .vscode/*

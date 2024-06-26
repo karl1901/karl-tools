@@ -143,7 +143,7 @@ export const copyText = async (str: string, isShowOk: boolean | null): Promise<v
         .writeText(str)
         .then(() => {
             if (isShowOk || isShowOk == null) {
-                console.log('文本已成功复制到剪贴板:' + str);
+                console.log('The text has been successfully copied to the clipboard:' + str);
             }
         })
         .catch((error) => {

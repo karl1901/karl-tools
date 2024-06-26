@@ -28,7 +28,7 @@ class EventEmitter<T extends string> {
     on<K extends T>(eventName: K, listener: Function) {
         // 检查事件是否存在
         if (!this.listeners[eventName]) {
-            throw new Error(`事件 ${eventName} 不存在`);
+            throw new Error(`Event ${eventName} does not exist`);
         }
         // 将事件处理函数添加到事件监听器中
         this.listeners[eventName].add(listener);
@@ -43,7 +43,7 @@ class EventEmitter<T extends string> {
     off<K extends T>(eventName: K, listener?: Function) {
         // 检查事件是否存在
         if (!this.listeners[eventName]) {
-            throw new Error(`事件 ${eventName} 不存在`);
+            throw new Error(`Event ${eventName} does not exist`);
         }
         // 如果传入了监听器，则从事件的监听器集合中删除该监听器，否则清空该事件的监听器集合
         listener ? this.listeners[eventName].delete(listener) : this.listeners[eventName].clear();
@@ -58,7 +58,7 @@ class EventEmitter<T extends string> {
     async emit<K extends T>(eventName: K, ...args: any[]) {
         // 检查事件是否存在
         if (!this.listeners[eventName]) {
-            throw new Error(`事件 ${eventName} 不存在`);
+            throw new Error(`Event ${eventName} does not exist`);
         }
         // 获取事件的所有监听器
         const listeners = Array.from(this.listeners[eventName]);
@@ -70,7 +70,7 @@ class EventEmitter<T extends string> {
                     await listener(...args);
                 } catch (error) {
                     // 打印错误信息
-                    console.error(`事件 ${eventName} 的监听器发生错误:`, error);
+                    console.error(`An error occurred on the listener for event ${eventName}:`, error);
                 }
             })
         );
