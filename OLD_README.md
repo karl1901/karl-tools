@@ -1,52 +1,12 @@
-<div align="center">
-   <a href="https://github.com/karl1901/karl-tools"><img src="https://karl-blog.oss-cn-shenzhen.aliyuncs.com/karl-tools/logo.png" /></a><br>
-</div>
+# karl的工具库
 
-<p align="center">一 个 免 费 的 TypeScript 工 具 库</p>
+> 介绍：个人开源npm工具库，觉得好用可以点个start  
+>
+> 地址：[点击打开 - npm仓库](https://www.npmjs.com/package/karl-tools)  
+>
+> 安装：`npm i karl-tools`
 
-<p align="center">
-    <a href="https://github.com/karl1901/karl-tools"><b>主页</b></a> •
-    <a href="https://github.com/karl1901/karl-tools/blob/main/README.md"><b>文档</b></a>
-</p>
-
-<div align="center">
-
-[![github](https://flat.badgen.net/badge/icon/github?icon=github&label)](https://github.com/karl1901/karl-tools)
-[![github-stars](https://badgen.net/github/stars/karl1901/karl-tools)](https://github.com/karl1901/karl-tools)
-[![npm](https://badgen.net/badge/icon/npm?icon=npm&label)](https://www.npmjs.com/package/karl-tools)
-[![npm-v](https://badgen.net/npm/v/karl-tools)](https://www.npmjs.com/package/karl-tools)
-[![npm-license](https://badgen.net/npm/license/karl-tools)](https://www.npmjs.com/package/karl-tools)
-[![npm-dt](https://badgen.net/npm/dt/karl-tools)](https://www.npmjs.com/package/karl-tools)
-
-</div>
-
-<!-- 自动生成目录：Ctrl + Shift + p，搜索MarkDown -->
-<!-- 需要插件：Markdown All in One、Markdown Preview Enhanced -->
-## 目录
-
-- [目录](#目录)
-- [安装](#安装)
-- [发布的版本](#发布的版本)
-- [已发布内容](#已发布内容)
-  - [1、工具函数](#1工具函数)
-    - [函数使用方法](#函数使用方法)
-    - [函数列表](#函数列表)
-  - [2、Axios - Ajax请求封装函数工具](#2axios---ajax请求封装函数工具)
-  - [3、事件处理器](#3事件处理器)
-
-## 安装
-
-```shell
-# 下载最新版本
-npm i karl-tools
-```
-
-```shell
-# 下载指定版本
-npm i karl-tools@x.x.x
-```
-
-## 发布的版本
+## 发布版本
 
 > 1.0.0  工具库初代  
 >
@@ -77,8 +37,6 @@ npm i karl-tools@x.x.x
 > 1.1.3 修复了ts类型无提示和导入问题  
 >
 > 1.1.4 修复了文件路径引入错误的问题  
->
-> 1.1.5 更新了说明文档  
 
 ## 已发布内容
 
@@ -87,6 +45,8 @@ npm i karl-tools@x.x.x
 #### 函数使用方法
 
 1、导入
+
+页面 Vue 文件中
 
 ```js
 // 导入整个模块
@@ -99,6 +59,7 @@ import * as karlTools from 'karl-tools';
 // 按需导入
 import { formatDate } from 'karl-tools';
 ```
+
 
 2、使用
 
@@ -119,7 +80,7 @@ showNow() {
 ```
 
 ```html
-<!-- 在页面使用获取当前时间的方法 -->
+<!-- 使用获取当前时间的方法 -->
 <div>{{ showNow() }}</div>
 ```
 
@@ -129,47 +90,45 @@ showNow() {
 
 #### 函数列表
 
-- 1、formatDate：`格式化日期时间`，例如：2023-10-09 12:00:00、2023年10月09日 12:00:00...
-- 2、formatCommas：`格式化数字`，例如：10,000,000、10,000.00...
-- 3、openChooseFile：`打开文件选择器`，支持单选、多选
-- 4、formatFileSize：`格式化文件大小`，例如：100KB、130MB...
-- 5、copyText：`复制文本内容`，支持控制台打印复制结果
-- 6、searchKeywordInfo：`关键字着色`，常用于搜索结果字符串标色
-- 7、searchKeywordList：`根据关键字查找集合中符合条件的数据`，常用于查找集合中包含条件的所有内容，支持嵌套结构
-- 8、searchTypeList：`集合信息比对匹配`，常用于获取两集合中含有的相同内容
-- 9、sortList：`集合排序`，常用于集合排序，例如：商品集合中根据商品价格排序，支持升序、降序
-- 10、saveLocalInfo：`保存信息到本地`，常用于保存token
-- 11、loadLocalInfo：`加载本地保存的信息`，常用于保存的token
-- 12、checkLocalInfo：`检验本地保存的信息是否过期`，常用于校验token是否过期
-- 13、maskStr：`字符串掩盖格式化`，例如：136\*\*\*6343、房东\*\*\*猫、游客k1\*\*ws...
-- 14、concurRequest：`并发请求工具函数`，可控制并发数，不受浏览器限制，但是受服务器限制，如果服务器限制了并发数，那么这个函数就无法实现并发请求
+- formatDate：`格式化日期时间`，例如：2023-10-09 12:00:00、2023年10月09日 12:00:00...
+- formatCommas：`格式化数字`，例如：10,000,000、10,000.00...
+- openChooseFile：`打开文件选择器`，支持单选、多选
+- formatFileSize：`格式化文件大小`，例如：100KB、130MB...
+- copyText：`复制文本内容`，支持控制台打印复制结果
+- searchKeywordInfo：`关键字着色`，常用于搜索结果字符串标色
+- searchKeywordList：`根据关键字查找集合中符合条件的数据`，常用于查找集合中包含条件的所有内容，支持嵌套结构
+- searchTypeList：`集合信息比对匹配`，常用于获取两集合中含有的相同内容
+- sortList：`集合排序`，常用于集合排序，例如：商品集合中根据商品价格排序，支持升序、降序
+- saveLocalInfo：`保存信息到本地`，常用于保存token
+- loadLocalInfo：`加载本地保存的信息`，常用于保存的token
+- checkLocalInfo：`检验本地保存的信息是否过期`，常用于校验token是否过期
+- maskStr：`字符串掩盖格式化`，例如：136\*\*\*6343、房东\*\*\*猫、游客k1\*\*ws...
+- concurRequest：`并发请求工具函数`，可控制并发数，不受浏览器限制，但是受服务器限制，如果服务器限制了并发数，那么这个函数就无法实现并发请求
 
 ### 2、Axios - Ajax请求封装函数工具
 
-> 提示：使用我的工具库可以不用下载Axios库，直接使用我封装好的Axios实例即可，并且可以自定义配置和拦截器等，如果需要使用自己的Axios实例，后续会更新自定义Axios实例的请求封装函数  
-> 工具使用到的库以及版本如下  
-> 1、@types/qs: `6.9.15`  
-> 2、qs: `6.12.1`  
-> 3、axios: `1.7.2`  
+ps：工具使用到的库以及版本如下  
+1、@types/qs: `6.9.15`  
+2、qs: `6.12.1`  
+3、axios: `1.7.2`  
 
-函数名称：`send`  
+请求函数：send  
 
-函数参数：  
+请求参数：  
 
-> url：`请求地址`  
-> param：`请求参数`  
-> method：`请求方式`  
-> returnPromise：`是否返回Promise对象`  
-> errorResponse：`是否返回自定义错误信息函数，函数可接收一个参数(类型：any)，即请求发生错误的信息`  
-> callback：`回调函数，可接收一个参数(类型：any)，即请求返回的结果`  
+url：`请求地址`  
+param：`请求参数`  
+method：`请求方式`  
+returnPromise：`是否返回Promise对象`  
+errorResponse：`是否返回自定义错误信息函数，函数可接收一个参数(类型：any)，即请求发生错误的信息`  
+callback：`回调函数，可接收一个参数(类型：any)，即请求返回的结果`  
 
-返回值：`Promise对象或回调函数`  
+返回值：Promise对象或回调函数  
 
 使用示例：
 
 ```ts
-// Axios内容导入请求方法类型，需要下载Axios
-// 我采用的是Axios的Method来限定请求的方式，当然，你也可以自定义Method
+// Axios内容导入
 import { Method } from 'axios';
 // 导入Ajax请求封装函数工具、Axios实例
 import { send, Axios } from 'karl-tools';
@@ -185,11 +144,11 @@ const ServerBaseUrl = {
 type ServerBaseUrl = typeof ServerBaseUrl;
 
 /**
- * 自定义错误信息处理函数（如果是回调请求结果，会返回自定义的错误信息）
+ * 自定义错误信息处理函数
  * 
  * @description 返回一个对象，自定义请求发生错误时的返回信息
  *
- * @param err 请求发生错误的信息
+ * @param err 错误信息
  *
  * @returns 返回的错误信息
  */
@@ -221,7 +180,6 @@ Axios.interceptors.request.use(
     },
     (err) => {
         console.log('请求拦截器错误信息:{}', err);
-        // 继续请求
         return Promise.reject(err);
     }
 );
@@ -233,7 +191,6 @@ Axios.interceptors.response.use(
     },
     (err) => {
         console.log('响应拦截器错误信息:{}', err);
-        // 返回结果
         return Promise.reject(err);
     }
 );
@@ -242,7 +199,7 @@ Axios.interceptors.response.use(
 
 ### 3、事件处理器
 
-ps：主要用于处理项目中的事件，例如：`登录过期/未授权`，`路由跳转到登录页面并弹出提示` 等
+ps：主要用于处理项目中的事件，例如：登录过期/未授权，路由跳转到登录页面并弹出提示等
 
 ```ts
 // 导入监听器工具
