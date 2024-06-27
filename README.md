@@ -57,7 +57,7 @@ npm i karl-tools@x.x.x
 
 ## 发布的版本
 
-[更新日志](https://github.com/karl1901/karl-tools/CHANGELOG.md)
+[更新日志](https://github.com/karl1901/karl-tools/blob/main/CHANGELOG.md)  
 
 ## 已发布内容
 
