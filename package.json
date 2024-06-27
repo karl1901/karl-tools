@@ -1,42 +1,44 @@
 {
-  "name": "karl-tools",
-  "version": "1.1.5",
-  "description": "Karl's arsenal of tools",
-  "type": "module",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/karl-tools.umd.cjs",
-  "module": "./dist/karl-tools.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
+    "name": "karl-tools",
+    "version": "1.1.6",
+    "description": "Karl's arsenal of tools",
+    "type": "module",
+    "files": [
+        "dist"
+    ],
+    "main": "./dist/karl-tools.umd.cjs",
+    "module": "./dist/karl-tools.js",
     "types": "./dist/index.d.ts",
-    "import": "./dist/karl-tools.js",
-    "require": "./dist/karl-tools.umd.cjs"
-  },
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build"
-  },
-  "keywords": [
-    "karl-tools"
-  ],
-  "author": "karl",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/karl1901/karl-tools.git"
-  },
-  "bugs": {
-    "url": "https://github.com/karl1901/karl-tools/issues"
-  },
-  "homepage": "https://github.com/karl1901/karl-tools#readme",
-  "devDependencies": {
-    "@types/qs": "^6.9.15",
-    "axios": "^1.7.2",
-    "qs": "^6.12.1",
-    "typescript": "^5.4.5",
-    "vite": "^5.2.10",
-    "vite-plugin-dts": "^3.9.1"
-  }
+    "exports": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/karl-tools.js",
+        "require": "./dist/karl-tools.umd.cjs"
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build"
+    },
+    "keywords": [
+        "karl-tools",
+        "tools",
+        "typescript"
+    ],
+    "author": "karl",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/karl1901/karl-tools.git"
+    },
+    "bugs": {
+        "url": "https://github.com/karl1901/karl-tools/issues"
+    },
+    "homepage": "https://github.com/karl1901/karl-tools#readme",
+    "devDependencies": {
+        "@types/qs": "^6.9.15",
+        "axios": "^1.7.2",
+        "qs": "^6.12.1",
+        "typescript": "^5.4.5",
+        "vite": "^5.2.10",
+        "vite-plugin-dts": "^3.9.1"
+    }
 }
