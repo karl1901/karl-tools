@@ -78,9 +78,19 @@ export const formatCommas = (num: number, intervalNum: number | null): string =>
  *
  * @param cb 选择文件后的回调函数
  * @param isMultiple 是否多选，默认：否
+ * @param isDirectory 是否选择文件夹，默认：否
  */
-export const openChooseFile = (cb: (files: FileList | null) => void, isMultiple: boolean | null): void => {
-    isMultiple = isMultiple == null ? false : isMultiple;
+export const openChooseFile = (cb: (files: FileList | null) => void, isMultiple: boolean | null, isDirectory: boolean | null): void => {
+    // 默认值设定
+    isMultiple = !!isMultiple; // 转换为布尔值
+    isDirectory = !!isDirectory; // 转换为布尔值
+
+    // 确保isMultiple和isDirectory不会同时为true
+    if (isDirectory) {
+        isMultiple = false; // 如果选择文件夹模式，则多选模式被禁用
+    } else {
+        isDirectory = false; // 如果多选模式，则选择文件夹模式被禁用
+    }
 
     let eleFile: HTMLInputElement = document.createElement('input');
     eleFile.setAttribute('type', 'file');
@@ -89,12 +99,14 @@ export const openChooseFile = (cb: (files: FileList | null) => void, isMultiple:
         eleFile.setAttribute('multiple', 'true');
     }
 
+    if (isDirectory) {
+        eleFile.setAttribute('webkitdirectory', 'true');
+        eleFile.setAttribute('mozdirectory', 'true');
+        eleFile.setAttribute('odirectory', 'true');
+    }
+
     eleFile.addEventListener('change', function () {
-        if (eleFile.files && eleFile.files.length > 0) {
-            cb(eleFile.files);
-        } else {
-            cb(null);
-        }
+        cb(eleFile.files);
     });
 
     eleFile.addEventListener('cancel', function () {

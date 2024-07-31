@@ -46,6 +46,8 @@ interface RequestOptions {
  *
  * @description 封装axios请求，支持返回Promise对象和回调函数两种方式
  *
+ * @author karl
+ *
  * @param baseUrl 请求地址前缀
  * @param url 请求地址
  * @param param 请求参数

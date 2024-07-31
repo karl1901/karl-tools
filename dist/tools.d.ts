@@ -34,8 +34,9 @@ export declare const formatCommas: (num: number, intervalNum: number | null) => 
  *
  * @param cb 选择文件后的回调函数
  * @param isMultiple 是否多选，默认：否
+ * @param isDirectory 是否选择文件夹，默认：否
  */
-export declare const openChooseFile: (cb: (files: FileList | null) => void, isMultiple: boolean | null) => void;
+export declare const openChooseFile: (cb: (files: FileList | null) => void, isMultiple: boolean | null, isDirectory: boolean | null) => void;
 /**
  * 格式化文件大小
  *

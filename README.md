@@ -1,5 +1,5 @@
 <div align="center">
-   <a href="https://github.com/karl1901/karl-tools"><img src="https://karl-blog.oss-cn-shenzhen.aliyuncs.com/karl-tools/logo.png" /></a><br>
+<a href="https://github.com/karl1901/karl-tools"><img src="https://kangxianghui.top/api/Util/OnlineView/articlePicture/karl11721975927150192.png" /></a><br>
 </div>
 
 <p align="center">一 个 免 费 的 TypeScript 工 具 库</p>
@@ -102,17 +102,13 @@ showNow() {
 <div>{{ showNow() }}</div>
 ```
 
-3、效果
-
-![Snipaste_20231010_153251.png](http://karl-blog.oss-cn-shenzhen.aliyuncs.com/aurora/articles/70eca9c11769935aa6e081be2b4ec2bf.png)  
-
 #### 函数列表
 
 | 函数              | 名称                               | 说明                                                                                                   |
 | ----------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | formatDate        | 格式化日期时间                     | 例如：2023-10-09 12:00:00、2023年10月09日 12:00:00...                                                  |
 | formatCommas      | 格式化数字                         | 例如：10,000,000、10,000.00...                                                                         |
-| openChooseFile    | 打开文件选择器                     | 支持单选、多选                                                                                         |
+| openChooseFile    | 打开文件选择器                     | 支持单选、多选，选中文件夹                                                                             |
 | formatFileSize    | 格式化文件大小                     | 例如：100KB、130MB...                                                                                  |
 | copyText          | 复制文本内容                       | 支持控制台打印复制结果                                                                                 |
 | searchKeywordInfo | 关键字着色                         | 常用于搜索结果字符串标色                                                                               |
@@ -124,6 +120,7 @@ showNow() {
 | checkLocalInfo    | 检验本地保存的信息是否过期         | 检验本地保存的Token、其他信息是否已过期                                                                |
 | maskStr           | 字符串掩盖格式化                   | 例如：136\*\*\*6343、房东\*\*\*猫、游客k1\*\*ws...                                                     |
 | concurRequest     | 并发请求工具函数                   | 可控制并发数，不受浏览器限制，但是受服务器限制，如果服务器限制了并发数，那么这个函数就无法实现并发请求 |
+| cutAndHashFile    | 大文件分片函数                     | 将文件按照指定大小进行分片，并计算每个分片的哈希值，按照顺序返回分片后的信息集合                       |
 
 ### 2、Axios - Ajax请求封装函数工具
 
@@ -192,10 +189,12 @@ export const request = (
     cb?: Function
 ) => {
     // 返回请求结果
-    return send(base, url, param, method, returnPromise, {
+    return send(base, url, param, method, {
         returnPromise: returnPromise,
         errorResponse: errorResponse,
-        callback: cb
+        callback(data) {
+            cb && cb(data);
+        }
     });
 };
 
@@ -271,10 +270,12 @@ export const request = (
     cb?: Function
 ) => {
     // 返回请求结果
-    return send(base, url, param, method, returnPromise, {
+    return send(base, url, param, method, {
         returnPromise: returnPromise,
         errorResponse: errorResponse,
-        callback: cb,
+        callback(data) {
+            cb && cb(data);
+        },
         axiosInstance: axios, // 使用自己项目安装的Axios实例
         qsOptions: {  // qs参数格式化配置
             allowDots: true, // 允许对象参数的点符号
