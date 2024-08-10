@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, Method } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, Method } from 'axios';
 import qs, { IStringifyOptions } from 'qs';
 
 // 定义Ajax请求的配置参数
@@ -69,12 +69,17 @@ export const send = (baseUrl: string, url: string, param?: any | null, method?: 
     param = param || null;
     method = method || 'POST';
 
-    // 默认使用 axios全局实例 和 qs默认配置
-    axiosInstance = axiosInstance || axios;
+    // 默认使用 axios创建新实例 和 默认qs配置
+    axiosInstance =
+        axiosInstance ||
+        axios.create({
+            baseURL: baseUrl, // 设置默认请求地址前缀
+            timeout: 60 * 1000 // 设置默认请求超时时间为60秒
+        });
     qsOptions = qsOptions || { allowDots: true };
 
     // 请求参数格式化
-    const formattedParam = qs.stringify(param, qsOptions);
+    let formattedParam = qs.stringify(param, qsOptions);
 
     // 处理GET请求
     let fullUrl = baseUrl + url;
@@ -82,15 +87,20 @@ export const send = (baseUrl: string, url: string, param?: any | null, method?: 
     if (method.toUpperCase() === 'GET') {
         // 拼接参数
         fullUrl += '?' + formattedParam;
+        formattedParam = '';
     }
 
-    // 发起请求
-    const promise = axiosInstance({
-        baseURL: baseUrl,
+    // 创建请求配置
+    const requestConfig = {
         url: url,
         method: method,
-        data: method.toUpperCase() !== 'GET' ? formattedParam : undefined
-    });
+        data: formattedParam
+    } as AxiosRequestConfig;
+    // 合并配置参数
+    const finalConfig = Object.assign(requestConfig, axiosInstance.defaults);
+
+    // 发起请求
+    const promise = axiosInstance(finalConfig);
 
     // 校验是否返回promise对象
     if (returnPromise) {
