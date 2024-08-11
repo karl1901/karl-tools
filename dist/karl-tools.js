@@ -3018,19 +3018,21 @@ var en = ue, fe = Di, ya = ki, da = Se, Re = en("%WeakMap%", !0), Pe = en("%Map%
   parse: ts,
   stringify: es
 };
-const os = /* @__PURE__ */ qr(ns), Os = (t, e, r, n, o) => {
-  let { returnPromise: i, errorResponse: a, callback: c, axiosInstance: y, qsOptions: d } = o || {};
-  r = r || null, n = n || "POST", y = y || x.create({
-    baseURL: t,
+const os = /* @__PURE__ */ qr(ns), Os = (t) => {
+  let { baseUrl: e, url: r, param: n, method: o, returnPromise: i, errorResponse: a, callback: c, axiosInstance: y, qsOptions: d } = t || {};
+  if (!e || !r) throw new Error("baseUrl and url are required");
+  n = n || null, o = o || "POST", y = y || x.create({
+    baseURL: e,
     // 设置默认请求地址前缀
     timeout: 60 * 1e3
     // 设置默认请求超时时间为60秒
   }), d = d || { allowDots: !0 };
-  let p = os.stringify(r, d);
-  n.toUpperCase() === "GET" && (p = "");
+  let p = os.stringify(n, d);
+  o.toUpperCase() === "GET" && (p = "");
   const v = Object.assign({
-    url: e,
-    method: n,
+    baseURL: e,
+    url: r,
+    method: o,
     data: p
   }, y.defaults), E = y(v);
   if (i)

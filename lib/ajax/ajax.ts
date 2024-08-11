@@ -1,8 +1,32 @@
 import axios, { AxiosInstance, AxiosRequestConfig, Method } from 'axios';
 import qs, { IStringifyOptions } from 'qs';
 
-// 定义Ajax请求的配置参数
+// 定义Ajax请求函数的可选配置对象
 interface RequestOptions {
+    /**
+     * 请求地址前缀（必填）
+     *
+     * @description 请求地址前缀，如果你传入了自定义Axios实例，此项会默认合并到自定义Axios实例的baseURL中
+     */
+    baseUrl: string;
+    /**
+     * 请求地址（必填）
+     *
+     * @description 请求地址，如果是GET请求会自动拼接在baseUrl后面
+     */
+    url: string;
+    /**
+     * 请求参数（可选）
+     *
+     * @description 请求参数，如果是GET请求会自动格式化后并拼接在url后面
+     */
+    param?: any;
+    /**
+     * 请求方式（可选）
+     *
+     * @description 请求方式，默认为 POST
+     */
+    method?: Method;
     /**
      * 是否返回 Promise 对象（可选）
      *
@@ -54,17 +78,17 @@ interface RequestOptions {
  *
  * @author karl
  *
- * @param baseUrl 请求地址前缀
- * @param url 请求地址
- * @param param 请求参数
- * @param method 请求方式
- * @param options 可选配置对象，包括：是否返回Promise对象、自定义错误信息函数、回调函数、自定义axios实例、自定义qs参数格式化配置
+ * @param options 可选配置对象
  *
  * @returns Promise对象或回调函数
  */
-export const send = (baseUrl: string, url: string, param?: any | null, method?: Method, options?: RequestOptions): Promise<any> | void => {
+export const send = (options: RequestOptions): Promise<any> | void => {
     // 默认配置参数处理
-    let { returnPromise, errorResponse, callback, axiosInstance, qsOptions } = options || {};
+    let { baseUrl, url, param, method, returnPromise, errorResponse, callback, axiosInstance, qsOptions } = options || {};
+
+    // 校验baseUrl和url是否为空
+    if (!baseUrl || !url) throw new Error('baseUrl and url are required');
+
     // 默认请求参数和请求方式处理
     param = param || null;
     method = method || 'POST';
@@ -92,6 +116,7 @@ export const send = (baseUrl: string, url: string, param?: any | null, method?: 
 
     // 创建请求配置
     const requestConfig = {
+        baseURL: baseUrl,
         url: url,
         method: method,
         data: formattedParam
