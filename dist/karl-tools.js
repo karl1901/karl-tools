@@ -3037,8 +3037,8 @@ const os = /* @__PURE__ */ qr(ns), is = x.create({
   if (!e || !r)
     throw new Error("baseUrl and url are required");
   const b = y || is;
-  let v = os.stringify(n, d);
-  o.toUpperCase() === "GET" && (r += `?${v}`, v = "");
+  let v = n;
+  n instanceof FormData || (v = os.stringify(n, d)), o.toUpperCase() === "GET" && (r += `?${v}`, v = "");
   const w = Object.assign({
     baseURL: e,
     url: r,
