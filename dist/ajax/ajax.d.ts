@@ -38,7 +38,7 @@ interface RequestOptions {
      *
      * @description 当请求发生错误时，返回一个自定义的错误响应
      *
-     * @param error 错误信息对象
+     * @param error 错误信息对象（回调参数）
      *
      * @returns 自定义的错误响应
      */
@@ -64,7 +64,16 @@ interface RequestOptions {
      *
      */
     qsOptions?: IStringifyOptions;
+    /**
+     * 自定义拦截器（可选）
+     *
+     * @description 如果需要使用自定义的拦截器，可以在这里传入，不论是否传入自定义Axios实例，都会回调一个当前axios实例
+     *
+     * @param axiosInstance axios实例（回调参数）
+     */
+    interceptors?: (axiosInstance: AxiosInstance) => void;
 }
+declare const karlAxiosInstance: AxiosInstance;
 /**
  * Ajax请求封装函数
  *
@@ -77,5 +86,4 @@ interface RequestOptions {
  * @returns Promise对象或回调函数
  */
 export declare const send: (options: RequestOptions) => Promise<any> | void;
-export declare const Axios: import('axios').AxiosStatic;
-export {};
+export default karlAxiosInstance;
