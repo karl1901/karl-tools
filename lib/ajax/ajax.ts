@@ -123,8 +123,12 @@ export const send = (options: RequestOptions): Promise<any> | void => {
     // 使用提供的 axios 实例或全局共享实例
     const sendAxiosInstance = axiosInstance || karlAxiosInstance;
 
-    // 请求参数格式化
-    let formattedParam = qs.stringify(param, qsOptions);
+    // 如果请求参数是FormData类型，则不需要格式化
+    let formattedParam = param;
+    if (!(param instanceof FormData)) {
+        // 请求参数格式化
+        formattedParam = qs.stringify(param, qsOptions);
+    }
 
     // 处理GET请求
     if (method.toUpperCase() === 'GET') {
