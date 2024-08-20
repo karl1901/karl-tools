@@ -362,14 +362,18 @@ export const sortList = <T>(list: T[], order: 'ascending' | 'descending', field:
  *
  * @param key 保存关键词
  * @param info 要保存的信息
- * @param expire 信息过期时间（时间戳，毫秒级）
+ * @param expire 信息过期时间（可选，时间戳，毫秒级）
  */
-export const saveLocalInfo = (key: string, info: string, expire: number) => {
-    const obj = {
-        info: info,
-        expire: Date.now() + expire
-    };
-    localStorage.setItem(key, JSON.stringify(obj));
+export const saveLocalInfo = (key: string, info: string, expire?: number) => {
+    if (expire) {
+        const obj = {
+            info: info,
+            expire: Date.now() + expire
+        };
+        localStorage.setItem(key, JSON.stringify(obj));
+        return;
+    }
+    localStorage.setItem(key, JSON.stringify({ info: info }));
 };
 
 /**
@@ -409,6 +413,19 @@ export const checkLocalInfo = (key: string) => {
             localStorage.removeItem(key);
         }
     }
+};
+
+/**
+ * 移除本地保存的信息
+ *
+ * @description 将保存在 LocalStorage 中的信息移除
+ *
+ * @author karl
+ *
+ * @param key 保存关键词
+ */
+export const removeLocalInfo = (key: string) => {
+    localStorage.removeItem(key);
 };
 
 /**

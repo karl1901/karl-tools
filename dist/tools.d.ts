@@ -140,9 +140,9 @@ export declare const sortList: <T>(list: T[], order: "ascending" | "descending",
  *
  * @param key 保存关键词
  * @param info 要保存的信息
- * @param expire 信息过期时间（时间戳，毫秒级）
+ * @param expire 信息过期时间（可选，时间戳，毫秒级）
  */
-export declare const saveLocalInfo: (key: string, info: string, expire: number) => void;
+export declare const saveLocalInfo: (key: string, info: string, expire?: number) => void;
 /**
  * 加载本地保存的信息
  *
@@ -165,6 +165,16 @@ export declare const loadLocalInfo: (key: string) => any;
  * @param key 保存关键词
  */
 export declare const checkLocalInfo: (key: string) => void;
+/**
+ * 移除本地保存的信息
+ *
+ * @description 将保存在 LocalStorage 中的信息移除
+ *
+ * @author karl
+ *
+ * @param key 保存关键词
+ */
+export declare const removeLocalInfo: (key: string) => void;
 /**
  * 字符串掩盖格式化
  *
