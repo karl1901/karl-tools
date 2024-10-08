@@ -1,6 +1,6 @@
 {
     "name": "karl-tools",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "description": "Karl's arsenal of tools",
     "type": "module",
     "files": [

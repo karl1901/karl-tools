@@ -6,12 +6,12 @@
  * @author karl
  *
  * @param date 日期时间
- * @param formatStr 格式化字符串，默认：yyyy-MM-dd hh:mm:ss:ms
- * @param errResStr 发生错误时返回的字符串，默认：空字符串
+ * @param formatStr 格式化字符串（可选），默认：yyyy-MM-dd hh:mm:ss:ms
+ * @param errResStr 发生错误时返回的字符串（可选），默认：空字符串
  *
  * @returns 格式化后的结果
  */
-export declare const formatDate: (date: any, formatStr: string | null, errResStr: string | null) => string;
+export declare const formatDate: (date: any, formatStr?: string, errResStr?: string) => string;
 /**
  * 格式化数字
  *
@@ -20,11 +20,11 @@ export declare const formatDate: (date: any, formatStr: string | null, errResStr
  * @author karl
  *
  * @param num 数字
- * @param intervalNum 逗号间隔，默认：3
+ * @param intervalNum 逗号间隔（可选），默认：3
  *
  * @returns 格式化后的结果
  */
-export declare const formatCommas: (num: number, intervalNum: number | null) => string;
+export declare const formatCommas: (num: number, intervalNum?: number) => string;
 /**
  * 打开文件选择器
  *
@@ -33,10 +33,9 @@ export declare const formatCommas: (num: number, intervalNum: number | null) => 
  * @author karl
  *
  * @param cb 选择文件后的回调函数
- * @param isMultiple 是否多选，默认：否
- * @param isDirectory 是否选择文件夹，默认：否
+ * @param pattern 选择文件模式（可选），默认：单选文件；可选：多选文件（Multiple）、选择文件夹（Directory）
  */
-export declare const openChooseFile: (cb: (files: FileList | null) => void, isMultiple: boolean | null, isDirectory: boolean | null) => void;
+export declare const openChooseFile: (cb: (files: FileList | null) => void, pattern?: "Multiple" | "Directory") => void;
 /**
  * 格式化文件大小
  *
@@ -48,7 +47,7 @@ export declare const openChooseFile: (cb: (files: FileList | null) => void, isMu
  *
  * @returns 格式化后的结果
  */
-export declare const formatFileSize: (size: string | null) => string;
+export declare const formatFileSize: (size?: string | number | null) => string;
 /**
  * 复制文本内容
  *
@@ -57,21 +56,9 @@ export declare const formatFileSize: (size: string | null) => string;
  * @author karl
  *
  * @param str 文本内容
- * @param isShowOk 是否打印复制成功的消息，默认：否
+ * @param cb 复制成功后的回调函数（可选），str：复制的文本内容
  */
-export declare const copyText: (str: string, isShowOk: boolean | null) => Promise<void>;
-/**
- * 跨域请求处理函数
- *
- * @description 请求跨域问题处理函数
- *
- * @author karl
- *
- * @param fun 要处理的请求函数
- * @param credentials 请求凭据
- * @param cross 请求域
- */
-export declare const requestInfos: (fun: Function, credentials: number, cross: number) => void;
+export declare const copyText: (str: string, cb?: (str: string) => void) => Promise<void>;
 /**
  * 关键字着色
  *
@@ -81,13 +68,13 @@ export declare const requestInfos: (fun: Function, credentials: number, cross: n
  *
  * @param original 原文
  * @param keywords 关键字
- * @param nullResStr 值为空返回的内容
- * @param isCapitalization 是否区分大小写，默认：区分大小写
- * @param keywordsColor 关键字着色，默认：红色
+ * @param nullResStr 值为空返回的内容（可选），默认：空字符串
+ * @param isCapitalization 是否区分大小写（可选），默认：区分大小写
+ * @param keywordsColor 关键字着色的颜色（可选），默认：红色
  *
  * @returns 处理后的内容
  */
-export declare const searchKeywordInfo: (original: any, keywords: any, nullResStr: any, isCapitalization: boolean | null, keywordsColor: any | null) => any;
+export declare const searchKeywordInfo: (original: any, keywords: any, nullResStr?: any, isCapitalization?: boolean, keywordsColor?: string) => any;
 /**
  * 根据关键字查找集合中符合条件的数据
  *
@@ -100,7 +87,7 @@ export declare const searchKeywordInfo: (original: any, keywords: any, nullResSt
  *
  * @returns 查找结果集合
  */
-export declare const searchKeywordList: (list: any, keywords: string) => any;
+export declare const searchKeywordList: (list: any[], keywords: string) => any[];
 /**
  * 集合信息比对匹配
  *
@@ -111,21 +98,21 @@ export declare const searchKeywordList: (list: any, keywords: string) => any;
  * @param list 数据集合
  * @param attributeName 比对字段名
  * @param searchValue 比对值
- * @param returnName 返回字段名，默认：返回整个对象
  * @param nullResStr 匹配对象为空的返回值
+ * @param returnName 返回字段名（可选），默认：返回整个对象
  *
  * @returns 匹配结果
  */
-export declare const searchTypeList: (list: any[], attributeName: string, searchValue: any, returnName: string | null, nullResStr: string) => any | null;
+export declare const searchTypeList: <T>(list: T[], attributeName: keyof T, searchValue: any, nullResStr: string, returnName?: keyof T) => any | null;
 /**
  * 集合排序
  *
- * @description 根据排序规则对数据集合进行排序
+ * @description 根据排序规则对数据集合进行排序，注：汉字会按照中华字典顺序排序
  *
  * @author karl
  *
  * @param list 数据集合
- * @param order 排序规则：ascending-升序，descending-降序
+ * @param order 排序规则：ascending：升序，descending：降序
  * @param field 排序字段
  *
  * @returns 排序后的集合
@@ -185,7 +172,7 @@ export declare const removeLocalInfo: (key: string) => void;
  * @param str 要格式的字符串
  * @param preserveStart 前置保留数
  * @param preserveEnd 后置保留数
- * @param starCount 星号数量，默认：除保留数外的字符数
+ * @param starCount 星号数量（可选），默认：除保留数外的字符数
  *
  * @returns 格式化后的字符串
  */
