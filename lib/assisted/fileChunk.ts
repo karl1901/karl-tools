@@ -1,5 +1,3 @@
-import SparkMD5 from 'spark-md5';
-
 // 定义分片信息对象
 interface ChunkInfo {
     /**
@@ -42,106 +40,88 @@ interface ChunkInfo {
  * @author karl
  *
  * @param file  文件对象
- * @param CHUNK_SIZE    分片大小，单位：字节，默认：5MB
+ * @param CHUNK_SIZE 分片大小，单位：字节，默认5MB
  *
  * @returns 分片信息数组
  */
 export const cutAndHashFile = async (file: File, CHUNK_SIZE?: number): Promise<ChunkInfo[]> => {
-    CHUNK_SIZE = CHUNK_SIZE || 1024 * 1024 * 5; // 默认分片大小为5MB
+    // 如果未指定分片大小，则默认使用 5MB
+    CHUNK_SIZE = CHUNK_SIZE || 5 * 1024 * 1024;
+    // 计算总分片数
+    const total = Math.ceil(file.size / CHUNK_SIZE);
+    // 设置并发 worker 数量，优先用硬件线程数，获取不到则用 8
+    const concurrency =
+        typeof navigator !== 'undefined' && navigator.hardwareConcurrency
+            ? Math.max(2, Math.min(navigator.hardwareConcurrency, 16)) // 限制范围，防止极端情况
+            : 8;
 
-    // 分片信息数组
-    const chunks: ChunkInfo[] = [];
-    // 创建一个SparkMD5实例
-    const spark = new SparkMD5.ArrayBuffer();
-    // 文件读取偏移量
-    let offset = 0;
-    // 分片索引
-    let index = 0;
-    // 存储每个切片和哈希操作的 Promise 对象
-    const promises: Promise<void>[] = [];
-
-    /**
-     * 切片和哈希函数
-     *
-     * @param deadline  空闲时间
-     */
-    const sliceAndHash = (deadline: IdleDeadline) => {
-        // 如果还有未处理的块，继续处理
-        while (offset < file.size && deadline.timeRemaining() > 0) {
-            // 计算分片起始和结束位置
-            const start = offset;
-            const end = Math.min(offset + CHUNK_SIZE, file.size);
-            // 读取分片数据
-            const chunk = file.slice(start, end);
-            // 将分片数据添加到SparkMD5实例中
-            promises.push(
-                readBlobAsArrayBuffer(chunk).then((buffer) => {
-                    // 计算分片哈希值
-                    spark.append(buffer);
-                    const hash = spark.end();
-                    // 拿到blob对象
-                    const blob = new Blob([chunk]);
-                    // 将分片信息添加到chunks数组中
-                    chunks.push({
-                        start,
-                        end,
-                        index,
-                        hash,
-                        blob
-                    });
-                    // 更新分片索引
-                    index++;
-                })
-            );
-            // 更新偏移量
-            offset += chunk.size;
-        }
-        // 如果还有未处理的块，继续使用 requestIdleCallback
-        if (offset < file.size) {
-            window.requestIdleCallback(sliceAndHash);
-        } else {
-            // 并发处理所有切片和哈希操作
-            Promise.all(promises);
-        }
-    };
-
-    // 开始切片和哈希，需要浏览器支持 requestIdleCallback
-    // 注：也可以使用 workjs
-    window.requestIdleCallback(sliceAndHash);
-
-    return new Promise((resolve) => {
-        // 等待所有切片处理完毕
-        resolve(chunks);
+    // 构建每个分片的任务信息
+    const chunkTasks = Array.from({ length: total }, (_, i) => {
+        // 计算分片起始位置
+        const start = i * CHUNK_SIZE!;
+        // 计算分片结束位置
+        const end = Math.min(start + CHUNK_SIZE!, file.size);
+        // 获取分片数据
+        const blob = file.slice(start, end);
+        // 返回分片任务对象
+        return { start, end, index: i, blob };
     });
+
+    // 读取 blob 为 ArrayBuffer 的辅助函数
+    function readBlobAsArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
+        return new Promise((resolve, reject) => {
+            // 创建文件读取器
+            const reader = new FileReader();
+            // 读取成功时返回结果
+            reader.onload = () => resolve(reader.result as ArrayBuffer);
+            // 读取失败时返回错误
+            reader.onerror = () => reject(reader.error);
+            // 以 ArrayBuffer 方式读取
+            reader.readAsArrayBuffer(blob);
+        });
+    }
+
+    // 创建 worker 池
+    const workers = Array.from({ length: concurrency }, createWorker);
+
+    // 用于存储每个分片的结果
+    const results: ChunkInfo[] = new Array(total);
+    // 下一个待处理的任务索引
+    let nextTask = 0;
+
+    // 使用 worker 处理分片任务
+    async function processWithWorker(worker: Worker) {
+        // 循环分配任务直到全部完成
+        while (nextTask < chunkTasks.length) {
+            // 获取当前任务索引
+            const taskIdx = nextTask++;
+            // 获取当前任务
+            const task = chunkTasks[taskIdx];
+            // 读取分片数据为 ArrayBuffer
+            const buffer = await readBlobAsArrayBuffer(task.blob);
+
+            // 发送数据到 worker 计算 hash
+            const hash: string = await new Promise((resolve) => {
+                worker.onmessage = (e: MessageEvent) => resolve(e.data.hash);
+                worker.postMessage({ index: task.index, buffer }, [buffer]);
+            });
+
+            // 保存分片信息及 hash
+            results[taskIdx] = { ...task, hash };
+        }
+    }
+
+    // 并发处理所有分片任务
+    await Promise.all(workers.map(processWithWorker));
+    // 关闭所有 worker
+    workers.forEach((w) => w.terminate());
+
+    // 返回所有分片信息
+    return results;
 };
 
-/**
- * 读取Blob为ArrayBuffer
- *
- * @param blob  Blob对象
- *
- * @returns 读取后的ArrayBuffer
- */
-function readBlobAsArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
-    return new Promise((resolve, reject) => {
-        // 创建FileReader对象
-        const reader = new FileReader();
-        // 读取Blob对象
-        reader.onload = (event) => {
-            // 如果读取成功，返回ArrayBuffer对象
-            if (event.target?.result instanceof ArrayBuffer) {
-                resolve(event.target.result);
-            } else {
-                // 如果读取失败，抛出错误
-                reject(new Error('Failed to read blob as ArrayBuffer'));
-            }
-        };
-        // 处理读取错误
-        reader.onerror = (event) => {
-            // 如果读取失败，抛出错误
-            reject(reader.error || new Error(`Unknown FileReader error: ${event.target?.error}`));
-        };
-        // 读取Blob对象为ArrayBuffer
-        reader.readAsArrayBuffer(blob);
-    });
+// 创建一个 Web Worker 实例
+function createWorker() {
+    // 使用 import.meta.url 来确保 Worker 的路径正确
+    return new Worker(new URL('./fileChunkWorker.ts', import.meta.url), { type: 'module' });
 }

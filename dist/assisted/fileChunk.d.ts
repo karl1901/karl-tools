@@ -38,7 +38,7 @@ interface ChunkInfo {
  * @author karl
  *
  * @param file  文件对象
- * @param CHUNK_SIZE    分片大小，单位：字节，默认：5MB
+ * @param CHUNK_SIZE 分片大小，单位：字节，默认5MB
  *
  * @returns 分片信息数组
  */
