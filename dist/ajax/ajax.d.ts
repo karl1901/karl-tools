@@ -1,6 +1,5 @@
 import { AxiosInstance, Method } from 'axios';
 import { IStringifyOptions } from 'qs';
-
 interface RequestOptions {
     /**
      * 请求地址前缀（必填）

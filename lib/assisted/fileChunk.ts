@@ -122,6 +122,21 @@ export const cutAndHashFile = async (file: File, CHUNK_SIZE?: number): Promise<C
 
 // 创建一个 Web Worker 实例
 function createWorker() {
-    // 使用 import.meta.url 来确保 Worker 的路径正确
-    return new Worker(new URL('./fileChunkWorker.ts', import.meta.url), { type: 'module' });
+    // Worker 代码，使用 SparkMD5 计算 ArrayBuffer 的 MD5 哈希值
+    const workerCode = `
+    importScripts("https://unpkg.com/spark-md5@3.0.2/spark-md5.min.js");
+    
+    self.onmessage = function(e) {
+      const { index, buffer } = e.data;
+      const spark = new self.SparkMD5.ArrayBuffer();
+      spark.append(buffer);
+      const hash = spark.end();
+      self.postMessage({ index, hash });
+    };
+  `;
+
+    // 创建一个 Blob 对象包含 Worker 代码
+    const blob = new Blob([workerCode], { type: 'application/javascript' });
+    // 返回一个新的 Worker 实例，使用 Blob URL
+    return new Worker(URL.createObjectURL(blob));
 }

@@ -1,5 +1,6 @@
 import './style.css';
 import typescriptLogo from './typescript.svg';
+import * as karlTools from '../lib/index';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -14,4 +15,18 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       This is an open source TypeScript library by Karl
     </p>
   </div>
+
+  <button id="counter">选择文件</button>
 `;
+
+document.querySelector<HTMLButtonElement>('#counter')!.addEventListener('click', () => {
+    karlTools.openChooseFile(async (files) => {
+        if (files && files.length > 0) {
+            const startTime = Date.now();
+            const chunks = await karlTools.cutAndHashFile(files[0]);
+            const endTime = Date.now();
+            console.log(`文件分片和哈希计算完成，耗时: ${(endTime - startTime) / 1000} 秒`);
+            console.log('分片信息:', chunks);
+        }
+    });
+});
