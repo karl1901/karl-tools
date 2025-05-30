@@ -1,6 +1,6 @@
 {
     "name": "karl-tools",
-    "version": "1.2.8",
+    "version": "1.2.9",
     "description": "Karl's arsenal of tools",
     "type": "module",
     "files": [
@@ -35,7 +35,6 @@
     "homepage": "https://github.com/karl1901/karl-tools#readme",
     "devDependencies": {
         "@types/qs": "^6.9.15",
-        "@types/spark-md5": "^3.0.4",
         "axios": "^1.7.2",
         "qs": "^6.12.1",
         "typescript": "^5.4.5",
