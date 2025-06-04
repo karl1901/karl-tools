@@ -124,6 +124,7 @@ showNow() {
 | maskStr           | 字符串掩盖格式化                   | 例如：136\*\*\*6343、房东\*\*\*猫、游客k1\*\*ws...                                                     |
 | concurRequest     | 并发请求工具函数                   | 可控制并发数，不受浏览器限制，但是受服务器限制，如果服务器限制了并发数，那么这个函数就无法实现并发请求 |
 | cutAndHashFile    | 大文件分片函数                     | 将文件按照指定大小进行分片，并计算每个分片的哈希值，按照顺序返回分片后的信息集合                       |
+| isBrowser         | 判断当前环境是否为浏览器           | 检测当前代码是否在浏览器环境中运行                                                                     |
 
 ### 2、Axios - Ajax请求封装函数工具
 
@@ -333,7 +334,7 @@ ps：此示例展示的是 - 如何封装文件上传函数并发送请求
 
 ```ts
 // 导入Axios实例与其类型声明
-import axios, { Method } from 'axios';
+import axios, { AxiosProgressEvent, Method } from 'axios';
 // 导入send函数，用于发送请求
 import { send } from 'karl-tools';
 
@@ -368,7 +369,13 @@ const fileAxios = axios.create({
  *
  * @returns Promise 或 void
  */
-export const uploadFile = (url: string, file: File, param?: any, method?: Method): Promise<any> | void => {
+export const uploadFile = (
+    url: string,
+    file: File,
+    param?: any,
+    method?: Method,
+    progress?: ((progressEvent: AxiosProgressEvent) => void) | undefined
+) => {
     // 创建一个FormData对象
     let formdata = new FormData();
     // 将文件对象添加到FormData中
@@ -379,6 +386,8 @@ export const uploadFile = (url: string, file: File, param?: any, method?: Method
             formdata.append(key, param[key]);
         }
     }
+    // 文件上传进度回调函数，怎么设置看你自己，也可以在这里创建axios实例时设置
+    fileAxios.defaults.onUploadProgress = progress || (() => {});
     // 发送请求并返回Promise函数
     return send({
         baseUrl: BASE_URL,

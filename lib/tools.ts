@@ -411,3 +411,16 @@ export const maskStr = (str: string, preserveStart: number, preserveEnd: number,
     const end = str.slice(length - preserveEnd);
     return start + middle + end;
 };
+
+/**
+ * 判断当前环境是否为浏览器
+ *
+ * @description 检测当前代码是否在浏览器环境中运行
+ *
+ * @author karl
+ *
+ * @returns 布尔值，true 表示在浏览器环境中运行，false 表示不在浏览器环境中运行
+ */
+export const isBrowser = () => {
+    return !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+};

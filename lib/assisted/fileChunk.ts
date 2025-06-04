@@ -1,3 +1,5 @@
+import { isBrowser } from '../tools';
+
 // 定义分片信息对象
 interface ChunkInfo {
     /**
@@ -51,7 +53,7 @@ export const cutAndHashFile = async (file: File, CHUNK_SIZE?: number): Promise<C
     const total = Math.ceil(file.size / CHUNK_SIZE);
     // 设置并发 worker 数量，优先用硬件线程数，获取不到则用 8
     const concurrency =
-        typeof navigator !== 'undefined' && navigator.hardwareConcurrency
+        typeof isBrowser() && navigator.hardwareConcurrency
             ? Math.max(2, Math.min(navigator.hardwareConcurrency, 16)) // 限制范围，防止极端情况
             : 8;
 
@@ -127,13 +129,13 @@ function createWorker() {
     importScripts("https://unpkg.com/spark-md5@3.0.2/spark-md5.min.js");
     
     self.onmessage = function(e) {
-      const { index, buffer } = e.data;
-      const spark = new self.SparkMD5.ArrayBuffer();
-      spark.append(buffer);
-      const hash = spark.end();
-      self.postMessage({ index, hash });
+        const { index, buffer } = e.data;
+        const spark = new self.SparkMD5.ArrayBuffer();
+        spark.append(buffer);
+        const hash = spark.end();
+        self.postMessage({ index, hash });
     };
-  `;
+    `;
 
     // 创建一个 Blob 对象包含 Worker 代码
     const blob = new Blob([workerCode], { type: 'application/javascript' });
